@@ -1,0 +1,3085 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Misi Rumah Selamat</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:"Trebuchet MS",Arial,sans-serif;
+    user-select:none;
+}
+
+body{
+    min-height:100vh;
+    background:#cda36f;
+    color:#34281e;
+}
+
+.hidden{
+    display:none!important;
+}
+
+button{
+    border:none;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+/* =====================================================
+   START
+===================================================== */
+
+#startScreen{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    background:
+        linear-gradient(rgba(20,20,20,.12),rgba(20,20,20,.12)),
+        linear-gradient(to bottom,#90d7f5 0 58%,#91cf74 58% 100%);
+}
+
+.start-card{
+    width:min(900px,96%);
+    background:#fff6dc;
+    border:8px solid #8b582c;
+    border-radius:30px;
+    padding:35px;
+    text-align:center;
+    box-shadow:0 13px 0 #59371c,0 25px 50px rgba(0,0,0,.25);
+}
+
+.start-card .house{
+    font-size:90px;
+}
+
+.start-card h1{
+    font-size:clamp(38px,7vw,65px);
+    color:#8d4c1b;
+    text-shadow:2px 3px #ffd97a;
+}
+
+.start-card h2{
+    color:#c05b2a;
+    font-size:26px;
+    margin:5px 0 18px;
+}
+
+.start-card p{
+    font-size:20px;
+    line-height:1.5;
+}
+
+.route{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:10px;
+    margin:25px 0;
+}
+
+.route span{
+    background:white;
+    border:3px solid #d4aa6e;
+    border-radius:16px;
+    padding:10px 16px;
+    font-weight:bold;
+}
+
+#startBtn{
+    padding:17px 35px;
+    border-radius:17px;
+    font-size:24px;
+    background:linear-gradient(#67be56,#398e30);
+    color:white;
+    box-shadow:0 7px 0 #23671e;
+}
+
+#startBtn:active{
+    transform:translateY(5px);
+    box-shadow:0 2px 0 #23671e;
+}
+
+/* =====================================================
+   GAME SHELL
+===================================================== */
+
+#gameScreen{
+    min-height:100vh;
+    background:#cda36f;
+}
+
+.game-shell{
+    width:min(1500px,100%);
+    margin:auto;
+    min-height:100vh;
+    background:#d7ae78;
+}
+
+.game-header{
+    background:linear-gradient(180deg,#24282e,#16191e);
+    border-bottom:7px solid #9e6530;
+    padding:14px 20px;
+    color:white;
+}
+
+.header-grid{
+    display:grid;
+    grid-template-columns:260px 1fr 420px;
+    align-items:center;
+    gap:18px;
+}
+
+.stats{
+    display:flex;
+    background:#e9f1ff;
+    color:#263650;
+    border-radius:20px;
+    border:5px solid #7891bd;
+    overflow:hidden;
+}
+
+.stat{
+    flex:1;
+    text-align:center;
+    padding:8px;
+}
+
+.stat + .stat{
+    border-left:2px solid #bbc8dc;
+}
+
+.stat strong{
+    display:block;
+    font-size:26px;
+}
+
+.title-area{
+    text-align:center;
+}
+
+.title-area h1{
+    font-size:clamp(30px,4vw,48px);
+    color:#ffe394;
+    text-shadow:2px 2px #5b3516;
+}
+
+.title-area p{
+    font-size:19px;
+}
+
+.progress{
+    display:flex;
+    justify-content:flex-end;
+    gap:7px;
+}
+
+.progress-item{
+    min-width:115px;
+    padding:8px;
+    border-radius:16px;
+    background:#595653;
+    border:4px solid #78736f;
+    color:#ddd;
+    text-align:center;
+    font-weight:bold;
+}
+
+.progress-item .icon{
+    font-size:31px;
+}
+
+.progress-item.active{
+    background:linear-gradient(#ffe18d,#e9ad39);
+    color:#50330d;
+    border-color:#ffd664;
+    box-shadow:0 0 15px rgba(255,205,75,.6);
+}
+
+.progress-item.done{
+    background:#5c9d58;
+    border-color:#8ed383;
+    color:white;
+}
+
+/* =====================================================
+   LEVEL BANNER
+===================================================== */
+
+.level-banner{
+    margin:15px 20px 10px;
+    padding:12px 18px;
+    background:#f8e5bd;
+    border:4px solid #b67b3a;
+    border-radius:17px;
+    box-shadow:0 5px 0 #835629;
+}
+
+.level-banner h2{
+    font-size:29px;
+}
+
+.level-banner p{
+    font-size:17px;
+}
+
+/* =====================================================
+   MAIN LAYOUT
+===================================================== */
+
+.main-layout{
+    display:grid;
+    grid-template-columns:230px 1fr;
+    gap:12px;
+    padding:0 20px;
+}
+
+.instructions{
+    background:#fff8e8;
+    border:5px solid #8a592e;
+    border-radius:18px;
+    padding:18px 15px;
+    box-shadow:0 7px 0 #60401f;
+}
+
+.instructions h3{
+    color:#2d6099;
+    text-align:center;
+    font-size:23px;
+    margin-bottom:15px;
+}
+
+.instructions p{
+    line-height:1.6;
+    margin-bottom:10px;
+}
+
+.tip{
+    margin-top:20px;
+    background:#ffe07b;
+    border:3px solid #c49a36;
+    border-radius:15px;
+    padding:12px;
+    font-weight:bold;
+    line-height:1.5;
+}
+
+/* =====================================================
+   ROOM
+===================================================== */
+
+.room-wrapper{
+    position:relative;
+    border:5px solid #835229;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 7px 0 #57361c;
+    background:#eee;
+}
+
+.room{
+    position:relative;
+    height:600px;
+    overflow:hidden;
+}
+
+/* kawasan objek hanya bahagian atas */
+.object-zone{
+    position:absolute;
+    left:0;
+    right:0;
+    top:0;
+    height:455px;
+    z-index:20;
+    pointer-events:none;
+}
+
+/* =====================================================
+   KITCHEN
+===================================================== */
+
+.kitchen{
+    background:linear-gradient(to bottom,#e8ddcc 0 67%,#b98151 67%);
+}
+
+.kitchen .tiles{
+    position:absolute;
+    left:0;
+    right:0;
+    top:125px;
+    height:225px;
+    background:
+        linear-gradient(#d4c7b5 2px,transparent 2px),
+        linear-gradient(90deg,#d4c7b5 2px,transparent 2px),
+        #f4eadb;
+    background-size:55px 55px;
+}
+
+.kitchen .window{
+    position:absolute;
+    left:30px;
+    top:55px;
+    width:215px;
+    height:190px;
+    background:linear-gradient(#8bd4f3,#e7f7ff);
+    border:13px solid #936034;
+}
+
+.kitchen .window:before{
+    content:"";
+    position:absolute;
+    left:49%;
+    top:0;
+    bottom:0;
+    width:7px;
+    background:#936034;
+}
+
+.kitchen .window:after{
+    content:"";
+    position:absolute;
+    left:0;
+    right:0;
+    top:48%;
+    height:7px;
+    background:#936034;
+}
+
+.kitchen .tree{
+    position:absolute;
+    left:45px;
+    top:145px;
+    font-size:82px;
+}
+
+.kitchen .upper-cabinets{
+    position:absolute;
+    left:280px;
+    top:35px;
+    width:640px;
+    height:100px;
+    display:flex;
+    gap:5px;
+}
+
+.kitchen .cab{
+    flex:1;
+    background:linear-gradient(90deg,#915225,#b96d31,#8a4b22);
+    border:4px solid #703d1d;
+    position:relative;
+}
+
+.kitchen .cab:after{
+    content:"";
+    position:absolute;
+    right:9px;
+    top:43%;
+    width:5px;
+    height:18px;
+    border-radius:3px;
+    background:#3e2819;
+}
+
+.kitchen .hood{
+    position:absolute;
+    left:585px;
+    top:22px;
+    width:185px;
+    height:125px;
+    background:#cfd2d2;
+    clip-path:polygon(30% 0,70% 0,75% 46%,100% 70%,100% 100%,0 100%,0 70%,25% 46%);
+}
+
+.kitchen .counter-left{
+    position:absolute;
+    left:0;
+    bottom:85px;
+    width:270px;
+    height:165px;
+    background:#81461f;
+    border-top:20px solid #ddd2bd;
+}
+
+.kitchen .counter-main{
+    position:absolute;
+    left:265px;
+    right:22px;
+    bottom:85px;
+    height:145px;
+    background:#87491f;
+    border-top:20px solid #d8c5a5;
+}
+
+.kitchen .sink{
+    position:absolute;
+    left:68px;
+    bottom:230px;
+    width:160px;
+    height:48px;
+    background:#aab3b5;
+    border:6px solid #d5dadb;
+    border-radius:4px 4px 45px 45px;
+}
+
+.kitchen .tap{
+    position:absolute;
+    left:125px;
+    bottom:272px;
+    width:65px;
+    height:70px;
+    border:10px solid #868d8f;
+    border-bottom:none;
+    border-radius:32px 32px 0 0;
+}
+
+.kitchen .dish{
+    position:absolute;
+    left:20px;
+    bottom:288px;
+    font-size:60px;
+}
+
+.kitchen .stove{
+    position:absolute;
+    left:520px;
+    bottom:225px;
+    width:215px;
+    height:74px;
+    background:#373737;
+    border:6px solid #999;
+    border-radius:7px;
+}
+
+.kitchen .burner{
+    position:absolute;
+    top:15px;
+    width:65px;
+    height:29px;
+    border-radius:50%;
+    background:#171717;
+    border:5px solid #555;
+}
+
+.kitchen .burner.one{left:25px}
+.kitchen .burner.two{right:25px}
+
+.kitchen .oven{
+    position:absolute;
+    left:535px;
+    bottom:85px;
+    width:185px;
+    height:135px;
+    background:#444;
+    border:7px solid #949494;
+}
+
+.kitchen .oven:after{
+    content:"";
+    position:absolute;
+    left:20px;
+    right:20px;
+    top:30px;
+    height:65px;
+    background:#1b1f22;
+    border:5px solid #666;
+}
+
+.kitchen .fridge{
+    position:absolute;
+    right:25px;
+    top:70px;
+    width:175px;
+    height:380px;
+    border-radius:10px;
+    background:linear-gradient(90deg,#eef0f0,#bdc4c6,#f2f3f3);
+    border:5px solid #a3a8aa;
+}
+
+.kitchen .fridge:before{
+    content:"";
+    position:absolute;
+    left:0;
+    right:0;
+    top:160px;
+    height:5px;
+    background:#92999b;
+}
+
+.kitchen .fridge:after{
+    content:"";
+    position:absolute;
+    left:18px;
+    top:65px;
+    width:7px;
+    height:72px;
+    background:#777;
+    border-radius:5px;
+}
+
+.kitchen .microwave{
+    position:absolute;
+    right:220px;
+    bottom:235px;
+    width:145px;
+    height:88px;
+    background:#b8babb;
+    border:5px solid #777;
+    border-radius:7px;
+}
+
+.kitchen .microwave:after{
+    content:"";
+    position:absolute;
+    left:10px;
+    top:12px;
+    width:90px;
+    height:54px;
+    background:#293136;
+    border:4px solid #62686c;
+}
+
+.kitchen .rice{
+    position:absolute;
+    right:385px;
+    bottom:235px;
+    width:82px;
+    height:76px;
+    background:#ddd;
+    border:5px solid #777;
+    border-radius:40px 40px 17px 17px;
+}
+
+.kitchen .table{
+    position:absolute;
+    left:350px;
+    bottom:-45px;
+    width:510px;
+    height:150px;
+    background:#bd7b3a;
+    border:7px solid #875029;
+}
+
+.kitchen .cloth{
+    position:absolute;
+    left:120px;
+    top:0;
+    width:270px;
+    height:100%;
+    background:
+        linear-gradient(90deg,rgba(255,255,255,.45) 50%,transparent 50%),
+        linear-gradient(rgba(255,255,255,.45) 50%,transparent 50%),
+        #ebc45e;
+    background-size:38px 38px;
+}
+
+.kitchen .fruit{
+    position:absolute;
+    left:202px;
+    top:-34px;
+    font-size:62px;
+}
+
+/* =====================================================
+   LIVING ROOM
+===================================================== */
+
+.living{
+    background:linear-gradient(to bottom,#e7e1d4 0 70%,#a76f47 70%);
+}
+
+.living .wall{
+    position:absolute;
+    inset:0 0 30%;
+    background:
+        radial-gradient(circle,rgba(255,255,255,.28) 2px,transparent 3px);
+    background-size:24px 24px;
+}
+
+.living .window{
+    position:absolute;
+    left:35px;
+    top:48px;
+    width:260px;
+    height:205px;
+    background:linear-gradient(#8ed5f4,#e8f7ff);
+    border:14px solid #70472a;
+}
+
+.living .window:before{
+    content:"";
+    position:absolute;
+    width:8px;
+    top:0;
+    bottom:0;
+    left:49%;
+    background:#70472a;
+}
+
+.living .window:after{
+    content:"";
+    position:absolute;
+    height:8px;
+    left:0;
+    right:0;
+    top:48%;
+    background:#70472a;
+}
+
+.living .curtain1,
+.living .curtain2{
+    position:absolute;
+    top:30px;
+    width:65px;
+    height:250px;
+    background:#c55c45;
+    border-radius:0 0 30px 30px;
+}
+
+.living .curtain1{left:8px}
+.living .curtain2{left:265px}
+
+.living .sofa{
+    position:absolute;
+    left:75px;
+    bottom:105px;
+    width:470px;
+    height:180px;
+    border-radius:55px 55px 18px 18px;
+    background:#5b7f9f;
+    border:7px solid #3c5870;
+}
+
+.living .sofa:after{
+    content:"";
+    position:absolute;
+    left:65px;
+    right:65px;
+    bottom:15px;
+    height:72px;
+    background:#6d92b2;
+    border:4px solid #496c87;
+    border-radius:14px;
+}
+
+.living .cushion1,
+.living .cushion2{
+    position:absolute;
+    width:90px;
+    height:65px;
+    bottom:160px;
+    border-radius:14px;
+}
+
+.living .cushion1{
+    left:140px;
+    background:#eab849;
+    transform:rotate(-7deg);
+}
+
+.living .cushion2{
+    left:365px;
+    background:#c85d4c;
+    transform:rotate(8deg);
+}
+
+.living .tv{
+    position:absolute;
+    right:80px;
+    top:75px;
+    width:300px;
+    height:180px;
+    background:#1c252b;
+    border:12px solid #354047;
+    border-radius:10px;
+}
+
+.living .tv:after{
+    content:"🏠";
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:65px;
+}
+
+.living .tvunit{
+    position:absolute;
+    right:35px;
+    bottom:105px;
+    width:395px;
+    height:105px;
+    background:#7e4d2d;
+    border:6px solid #55331f;
+}
+
+.living .bookshelf{
+    position:absolute;
+    left:590px;
+    top:45px;
+    width:145px;
+    height:255px;
+    background:#7e4c2e;
+    border:6px solid #56331e;
+}
+
+.living .bookshelf div{
+    height:33.333%;
+    border-bottom:5px solid #57331f;
+    padding:15px 8px;
+    font-size:28px;
+    overflow:hidden;
+}
+
+.living .rug{
+    position:absolute;
+    left:170px;
+    right:245px;
+    bottom:15px;
+    height:120px;
+    background:#e0b76e;
+    border:7px solid #bd8b42;
+    border-radius:50%;
+}
+
+.living .coffee{
+    position:absolute;
+    left:340px;
+    bottom:25px;
+    width:370px;
+    height:100px;
+    background:#a76c3b;
+    border:7px solid #784829;
+    border-radius:50% 50% 12px 12px;
+}
+
+.living .plant{
+    position:absolute;
+    right:5px;
+    bottom:95px;
+    font-size:112px;
+}
+
+.living .lamp{
+    position:absolute;
+    left:515px;
+    bottom:100px;
+    font-size:115px;
+}
+
+.living .socket{
+    position:absolute;
+    right:335px;
+    bottom:220px;
+    width:52px;
+    height:40px;
+    background:#faf8ee;
+    border:4px solid #bbb;
+    border-radius:6px;
+}
+
+.living .socket:after{
+    content:"•  •";
+    position:absolute;
+    inset:6px;
+    text-align:center;
+}
+
+/* =====================================================
+   BATHROOM
+===================================================== */
+
+.bathroom{
+    background:#d5ebee;
+}
+
+.bathroom .walltiles{
+    position:absolute;
+    inset:0 0 29%;
+    background:
+        linear-gradient(#a9cdd3 2px,transparent 2px),
+        linear-gradient(90deg,#a9cdd3 2px,transparent 2px),
+        #daf0f2;
+    background-size:72px 72px;
+}
+
+.bathroom .floor{
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:0;
+    height:31%;
+    background:
+        linear-gradient(#9baeb0 3px,transparent 3px),
+        linear-gradient(90deg,#9baeb0 3px,transparent 3px),
+        #cbd5d6;
+    background-size:80px 80px;
+}
+
+.bathroom .mirror{
+    position:absolute;
+    left:80px;
+    top:45px;
+    width:230px;
+    height:165px;
+    border-radius:14px;
+    background:linear-gradient(135deg,#d3f2ff,#8bc4d6);
+    border:12px solid white;
+}
+
+.bathroom .vanity{
+    position:absolute;
+    left:48px;
+    bottom:120px;
+    width:310px;
+    height:145px;
+    background:#87684f;
+    border-top:18px solid #f1eee8;
+}
+
+.bathroom .sink{
+    position:absolute;
+    left:100px;
+    bottom:245px;
+    width:195px;
+    height:55px;
+    background:#fff;
+    border:5px solid #bbb;
+    border-radius:0 0 80px 80px;
+}
+
+.bathroom .tap{
+    position:absolute;
+    left:175px;
+    bottom:292px;
+    width:55px;
+    height:55px;
+    border:9px solid #777;
+    border-bottom:none;
+    border-radius:28px 28px 0 0;
+}
+
+.bathroom .toilet{
+    position:absolute;
+    left:420px;
+    bottom:112px;
+    font-size:170px;
+}
+
+.bathroom .showerbox{
+    position:absolute;
+    right:25px;
+    top:22px;
+    width:390px;
+    height:410px;
+    border-left:8px solid rgba(120,160,170,.5);
+    background:linear-gradient(90deg,rgba(255,255,255,.18),rgba(170,220,230,.28));
+}
+
+.bathroom .shower{
+    position:absolute;
+    right:75px;
+    top:45px;
+    font-size:100px;
+}
+
+.bathroom .water{
+    position:absolute;
+    right:70px;
+    top:130px;
+    font-size:80px;
+    opacity:.7;
+}
+
+.bathroom .rack{
+    position:absolute;
+    right:335px;
+    top:75px;
+    width:115px;
+    height:190px;
+    border:7px solid #729095;
+    border-top:none;
+}
+
+.bathroom .rack:before,
+.bathroom .rack:after{
+    content:"";
+    position:absolute;
+    left:0;
+    right:0;
+    height:6px;
+    background:#729095;
+}
+
+.bathroom .rack:before{top:60px}
+.bathroom .rack:after{top:125px}
+
+.bathroom .bottles{
+    position:absolute;
+    right:337px;
+    top:88px;
+    font-size:34px;
+    line-height:1.85;
+}
+
+.bathroom .towelbar{
+    position:absolute;
+    left:360px;
+    top:65px;
+    width:130px;
+    height:8px;
+    background:#798b90;
+}
+
+.bathroom .towel{
+    position:absolute;
+    left:385px;
+    top:70px;
+    width:82px;
+    height:100px;
+    background:#f0b64b;
+}
+
+.bathroom .mat{
+    position:absolute;
+    right:125px;
+    bottom:45px;
+    width:190px;
+    height:72px;
+    background:#6791a7;
+    border:5px solid #507487;
+    border-radius:50%;
+}
+
+/* =====================================================
+   DRAGGABLE OBJECTS
+===================================================== */
+
+.object{
+    position:absolute;
+    width:92px;
+    min-height:90px;
+    background:rgba(255,255,255,.96);
+    border:4px solid #fff;
+    border-radius:17px;
+    box-shadow:0 6px 13px rgba(0,0,0,.23);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:7px;
+    cursor:grab;
+    pointer-events:auto;
+    touch-action:none;
+    transition:transform .15s,box-shadow .15s;
+}
+
+.object:hover{
+    transform:scale(1.06);
+}
+
+.object .emoji{
+    font-size:43px;
+}
+
+.object .label{
+    text-align:center;
+    font-size:12px;
+    font-weight:900;
+    margin-top:4px;
+}
+
+.object.dragging{
+    position:fixed!important;
+    width:105px!important;
+    min-height:105px;
+    z-index:9999;
+    pointer-events:none;
+    transform:scale(1.12);
+    box-shadow:0 18px 35px rgba(0,0,0,.35);
+}
+
+.object.completed{
+    display:none;
+}
+
+.object.shake{
+    animation:shake .35s;
+}
+
+@keyframes shake{
+    0%,100%{transform:translateX(0)}
+    25%{transform:translateX(-12px)}
+    50%{transform:translateX(12px)}
+    75%{transform:translateX(-8px)}
+}
+
+/* =====================================================
+   DROP ZONES
+===================================================== */
+
+.drop-row{
+    position:absolute;
+    left:22px;
+    right:22px;
+    bottom:18px;
+    height:118px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:45px;
+    z-index:40;
+}
+
+.drop-zone{
+    border:7px solid;
+    border-radius:18px 18px 8px 8px;
+    text-align:center;
+    padding:12px;
+    box-shadow:0 8px 0 rgba(0,0,0,.2),inset 0 5px rgba(255,255,255,.35);
+    transition:.2s;
+}
+
+.drop-zone h3{
+    font-size:24px;
+}
+
+.drop-zone p{
+    font-size:15px;
+    font-weight:bold;
+}
+
+#safeZone{
+    background:linear-gradient(#ebffd8,#b9e38e);
+    border-color:#4d963f;
+    color:#347329;
+}
+
+#dangerZone{
+    background:linear-gradient(#fff0ea,#f3b3a7);
+    border-color:#bc4c40;
+    color:#9d3025;
+}
+
+.drop-zone.highlight{
+    transform:scale(1.025);
+    box-shadow:0 0 0 8px rgba(255,220,60,.75);
+}
+
+/* =====================================================
+   FEEDBACK
+===================================================== */
+
+.bottom-area{
+    display:flex;
+    gap:12px;
+    align-items:center;
+    padding:16px 20px 20px;
+}
+
+#feedback{
+    flex:1;
+    min-height:65px;
+    background:#fff7e7;
+    border:4px solid #ae7b40;
+    border-radius:16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:10px;
+    font-weight:bold;
+    font-size:18px;
+}
+
+#feedback.correct{
+    background:#d9f4d3;
+    border-color:#4f9543;
+    color:#2e6b2a;
+}
+
+#feedback.wrong{
+    background:#ffd8d2;
+    border-color:#bd5043;
+    color:#962f26;
+}
+
+.next-btn{
+    min-width:225px;
+    padding:15px;
+    border-radius:15px;
+    font-size:18px;
+    background:#edbb42;
+    color:#54340c;
+    border:4px solid #a67520;
+    box-shadow:0 5px 0 #775215;
+}
+
+.next-btn.locked{
+    opacity:.55;
+}
+
+/* =====================================================
+   MODALS
+===================================================== */
+
+.overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.65);
+    z-index:10000;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.modal{
+    width:min(600px,95%);
+    background:#fff7e3;
+    border:7px solid #855026;
+    border-radius:26px;
+    padding:30px;
+    text-align:center;
+    box-shadow:0 14px 0 #563017;
+}
+
+.modal .icon{
+    font-size:85px;
+}
+
+.modal h2{
+    font-size:38px;
+    color:#8a4b18;
+}
+
+.modal p{
+    font-size:20px;
+    line-height:1.5;
+    margin-top:10px;
+}
+
+.modal button{
+    margin-top:20px;
+    padding:15px 28px;
+    border-radius:15px;
+    color:white;
+    background:#4b9a40;
+    font-size:20px;
+    box-shadow:0 6px 0 #2b6826;
+}
+
+/* =====================================================
+   FINAL
+===================================================== */
+
+#finalScreen{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    background:linear-gradient(#8bd2f4 0 58%,#88c86b 58%);
+}
+
+.final-card{
+    width:min(760px,96%);
+    background:#fff5d9;
+    border:7px solid #835027;
+    border-radius:30px;
+    padding:35px;
+    text-align:center;
+    box-shadow:0 14px 0 #533118;
+}
+
+.final-card .trophy{
+    font-size:95px;
+}
+
+.final-card h1{
+    font-size:50px;
+    color:#c27b15;
+}
+
+.final-score{
+    font-size:30px;
+    color:#2f6da2;
+    font-weight:bold;
+    margin:15px;
+}
+
+#finalStars{
+    font-size:52px;
+}
+
+.rules{
+    background:white;
+    border:3px solid #d3b38b;
+    border-radius:17px;
+    padding:18px;
+    margin:20px 0;
+    text-align:left;
+    line-height:1.8;
+    font-size:18px;
+}
+
+#restartBtn{
+    background:#4d9c41;
+    color:white;
+    padding:16px 30px;
+    border-radius:16px;
+    font-size:20px;
+}
+
+/* =====================================================
+   CONFETTI
+===================================================== */
+
+.confetti{
+    position:fixed;
+    top:-20px;
+    width:12px;
+    height:15px;
+    z-index:20000;
+    animation:fall 2.8s linear forwards;
+}
+
+@keyframes fall{
+    to{
+        transform:translateY(110vh) rotate(900deg);
+        opacity:.1;
+    }
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media(max-width:1100px){
+
+    .header-grid{
+        grid-template-columns:1fr;
+    }
+
+    .stats{
+        width:300px;
+        margin:auto;
+    }
+
+    .progress{
+        justify-content:center;
+    }
+
+    .main-layout{
+        grid-template-columns:1fr;
+    }
+
+    .instructions{
+        display:none;
+    }
+}
+
+@media(max-width:700px){
+
+    .room{
+        height:680px;
+    }
+
+    .object-zone{
+        height:505px;
+    }
+
+    .drop-row{
+        height:145px;
+        gap:8px;
+        left:8px;
+        right:8px;
+    }
+
+    .drop-zone h3{
+        font-size:16px;
+    }
+
+    .drop-zone p{
+        font-size:12px;
+    }
+
+    .object{
+        width:76px;
+        min-height:78px;
+    }
+
+    .object .emoji{
+        font-size:34px;
+    }
+
+    .object .label{
+        font-size:10px;
+    }
+
+    .bottom-area{
+        flex-direction:column;
+    }
+
+    .next-btn{
+        width:100%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- START -->
+
+<section id="startScreen">
+
+<div class="start-card">
+
+<div class="house">🏠</div>
+
+<h1>MISI RUMAH SELAMAT</h1>
+
+<h2>Kenali Bahaya, Lindungi Diri!</h2>
+
+<p>
+Jom lakukan pemeriksaan keselamatan di dalam rumah.
+Cari objek yang selamat dan objek yang berbahaya.
+</p>
+
+<div class="route">
+
+<span>🍳 Dapur</span>
+➡️
+<span>🛋️ Ruang Tamu</span>
+➡️
+<span>🚿 Bilik Air</span>
+➡️
+<span>🏆 Rumah Selamat</span>
+
+</div>
+
+<p style="margin-bottom:22px;">
+👆 Seret objek yang berada di dalam bilik ke kotak yang betul.
+</p>
+
+<button id="startBtn">
+▶️ MULA MISI
+</button>
+
+</div>
+
+</section>
+
+
+<!-- GAME -->
+
+<section id="gameScreen" class="hidden">
+
+<div class="game-shell">
+
+<header class="game-header">
+
+<div class="header-grid">
+
+<div class="stats">
+
+<div class="stat">
+❤️
+<span>NYAWA</span>
+<strong id="lifeText">3</strong>
+</div>
+
+<div class="stat">
+⭐
+<span>MARKAH</span>
+<strong id="scoreText">0</strong>
+</div>
+
+</div>
+
+
+<div class="title-area">
+
+<h1>🏠 MISI RUMAH SELAMAT</h1>
+
+<p>Kenali Bahaya, Lindungi Diri!</p>
+
+</div>
+
+
+<div class="progress">
+
+<div id="progress1" class="progress-item active">
+<div class="icon">🍳</div>
+1 Dapur
+</div>
+
+<div id="progress2" class="progress-item">
+<div class="icon">🛋️</div>
+2 Ruang Tamu
+</div>
+
+<div id="progress3" class="progress-item">
+<div class="icon">🚿</div>
+3 Bilik Air
+</div>
+
+</div>
+
+</div>
+
+</header>
+
+
+<div class="level-banner">
+
+<h2 id="levelTitle">
+🍳 BABAK 1: DAPUR
+</h2>
+
+<p id="levelSubtitle">
+Cari objek selamat dan berbahaya.
+</p>
+
+</div>
+
+
+<div class="main-layout">
+
+
+<aside class="instructions">
+
+<h3>📋 Arahan</h3>
+
+<p>
+👀 Cari objek yang bertaburan di dalam bilik.
+</p>
+
+<p>
+👉 Seret setiap objek ke salah satu kotak.
+</p>
+
+<p style="color:#36742f;">
+🟢 Selamat Digunakan
+</p>
+
+<p style="color:#aa3127;">
+🔴 Bahaya / Jangan Sentuh
+</p>
+
+
+<div class="tip">
+
+💡 Fikir dahulu sebelum memilih.
+
+<br><br>
+
+Jika anda nampak bahaya, beritahu orang dewasa.
+
+</div>
+
+</aside>
+
+
+<div class="room-wrapper">
+
+<div id="roomScene" class="room kitchen"></div>
+
+
+<div class="drop-row">
+
+<div id="safeZone" class="drop-zone">
+
+<h3>🛡️ SELAMAT DIGUNAKAN</h3>
+
+<p>Seret objek selamat ke sini</p>
+
+</div>
+
+
+<div id="dangerZone" class="drop-zone">
+
+<h3>⚠️ BAHAYA / JANGAN SENTUH</h3>
+
+<p>Seret objek berbahaya ke sini</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="bottom-area">
+
+<div id="feedback">
+👀 Cari objek di dalam bilik dan seret ke kotak yang betul.
+</div>
+
+<button id="nextBtn" class="next-btn locked" disabled>
+🔒 Ke Babak Seterusnya
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- LEVEL COMPLETE -->
+
+<div id="levelOverlay" class="overlay hidden">
+
+<div class="modal">
+
+<div class="icon">🎉</div>
+
+<h2 id="completeTitle">
+Dapur Selamat!
+</h2>
+
+<p id="completeText">
+Hebat!
+</p>
+
+<button id="continueBtn">
+➡️ TERUSKAN
+</button>
+
+</div>
+
+</div>
+
+
+<!-- GAME OVER -->
+
+<div id="gameOverOverlay" class="overlay hidden">
+
+<div class="modal">
+
+<div class="icon">💪</div>
+
+<h2>Cuba Lagi!</h2>
+
+<p>
+Jangan risau. Mari cuba mengenal pasti objek sekali lagi.
+</p>
+
+<button id="retryBtn">
+🔄 CUBA SEMULA
+</button>
+
+</div>
+
+</div>
+
+
+<!-- FINAL -->
+
+<section id="finalScreen" class="hidden">
+
+<div class="final-card">
+
+<div class="trophy">🏆</div>
+
+<h1>MISI SELESAI!</h1>
+
+<p style="font-size:22px;">
+Tahniah! Anda berjaya menjadikan rumah lebih selamat.
+</p>
+
+<div class="final-score">
+⭐ MARKAH:
+<span id="finalScore">0</span>
+</div>
+
+<div id="finalStars">
+⭐⭐⭐
+</div>
+
+<h2 id="performance">
+Cemerlang!
+</h2>
+
+
+<div class="rules">
+
+<h3 style="text-align:center;">
+🏠 INGAT!
+</h3>
+
+<p>🔪 Jangan sentuh benda tajam.</p>
+
+<p>⚡ Jangan bermain dengan elektrik.</p>
+
+<p>💊 Jangan mengambil ubat tanpa orang dewasa.</p>
+
+<p>🧪 Jangan bermain dengan bahan kimia.</p>
+
+<p>👨‍👩‍👧 Jika nampak bahaya, beritahu orang dewasa.</p>
+
+</div>
+
+
+<button id="restartBtn">
+🔄 MAIN SEMULA
+</button>
+
+</div>
+
+</section>
+
+
+<script>
+
+/* =====================================================
+   LEVEL DATA
+===================================================== */
+
+const levels=[
+
+/* =====================================================
+   DAPUR
+===================================================== */
+
+{
+
+title:"🍳 BABAK 1: DAPUR",
+
+subtitle:
+"Cari objek yang bertaburan di dapur dan kelaskan dengan betul.",
+
+className:"kitchen",
+
+background:`
+
+<div class="tiles"></div>
+
+<div class="window"></div>
+<div class="tree">🌳</div>
+
+<div class="upper-cabinets">
+<div class="cab"></div>
+<div class="cab"></div>
+<div class="cab"></div>
+<div class="cab"></div>
+</div>
+
+<div class="hood"></div>
+
+<div class="counter-left"></div>
+
+<div class="counter-main"></div>
+
+<div class="sink"></div>
+<div class="tap"></div>
+
+<div class="dish">🍽️</div>
+
+<div class="stove">
+
+<div class="burner one"></div>
+
+<div class="burner two"></div>
+
+</div>
+
+<div class="oven"></div>
+
+<div class="fridge"></div>
+
+<div class="microwave"></div>
+
+<div class="rice"></div>
+
+<div class="table">
+
+<div class="cloth"></div>
+
+<div class="fruit">
+🍎🍊🍌
+</div>
+
+</div>
+
+<div class="object-zone"></div>
+
+`,
+
+completeTitle:
+"🍳 DAPUR SELAMAT!",
+
+completeText:
+"Hebat! Anda berjaya mengenal pasti bahaya di dapur.",
+
+objects:[
+
+{
+name:"Pisau",
+emoji:"🔪",
+type:"danger",
+message:
+"Bahaya! Pisau tajam dan boleh melukakan tangan.",
+x:30,
+y:42
+},
+
+{
+name:"Gunting",
+emoji:"✂️",
+type:"danger",
+message:
+"Bahaya! Gunting mempunyai bahagian tajam.",
+x:45,
+y:18
+},
+
+{
+name:"Pengupas",
+emoji:"🥒",
+type:"danger",
+message:
+"Bahaya! Pengupas mempunyai mata yang tajam.",
+x:72,
+y:39
+},
+
+{
+name:"Api Panas",
+emoji:"🔥",
+type:"danger",
+message:
+"Bahaya! Api panas boleh menyebabkan melecur.",
+x:49,
+y:51
+},
+
+{
+name:"Sudu",
+emoji:"🥄",
+type:"safe",
+message:
+"Bagus! Sudu selamat digunakan dengan betul.",
+x:17,
+y:47
+},
+
+{
+name:"Mangkuk",
+emoji:"🥣",
+type:"safe",
+message:
+"Betul! Mangkuk plastik selamat digunakan.",
+x:61,
+y:20
+},
+
+{
+name:"Cawan",
+emoji:"🥤",
+type:"safe",
+message:
+"Bagus! Cawan plastik selamat digunakan.",
+x:79,
+y:17
+},
+
+{
+name:"Pinggan",
+emoji:"🍽️",
+type:"safe",
+message:
+"Betul! Pinggan plastik selamat digunakan.",
+x:8,
+y:27
+}
+
+]
+
+},
+
+
+/* =====================================================
+   RUANG TAMU
+===================================================== */
+
+{
+
+title:"🛋️ BABAK 2: RUANG TAMU",
+
+subtitle:
+"Perhatikan ruang tamu dan cari benda yang selamat atau berbahaya.",
+
+className:"living",
+
+background:`
+
+<div class="wall"></div>
+
+<div class="window"></div>
+
+<div class="curtain1"></div>
+<div class="curtain2"></div>
+
+<div class="sofa"></div>
+
+<div class="cushion1"></div>
+<div class="cushion2"></div>
+
+<div class="tv"></div>
+
+<div class="tvunit"></div>
+
+<div class="bookshelf">
+
+<div>📚📗</div>
+<div>📘📕</div>
+<div>📙📚</div>
+
+</div>
+
+<div class="rug"></div>
+
+<div class="coffee"></div>
+
+<div class="lamp">💡</div>
+
+<div class="plant">🪴</div>
+
+<div class="socket"></div>
+
+<div class="object-zone"></div>
+
+`,
+
+completeTitle:
+"🛋️ RUANG TAMU SELAMAT!",
+
+completeText:
+"Bagus! Anda berjaya mengenal pasti bahaya di ruang tamu.",
+
+objects:[
+
+{
+name:"Wayar Berselerak",
+emoji:"🔌",
+type:"danger",
+message:
+"Bahaya! Wayar berselerak boleh menyebabkan kita tersadung.",
+x:68,
+y:57
+},
+
+{
+name:"Soket Terbuka",
+emoji:"⚡",
+type:"danger",
+message:
+"Bahaya! Jangan masukkan jari ke dalam soket elektrik.",
+x:80,
+y:44
+},
+
+{
+name:"Ubat",
+emoji:"💊",
+type:"danger",
+message:
+"Bahaya! Jangan makan ubat tanpa bantuan orang dewasa.",
+x:42,
+y:50
+},
+
+{
+name:"Periuk Elektrik",
+emoji:"♨️",
+type:"danger",
+message:
+"Bahaya! Periuk elektrik panas boleh menyebabkan melecur.",
+x:58,
+y:31
+},
+
+{
+name:"Bateri Butang",
+emoji:"🔋",
+type:"danger",
+message:
+"Bahaya! Bateri kecil tidak boleh dimasukkan ke dalam mulut.",
+x:30,
+y:17
+},
+
+{
+name:"Teddy Bear",
+emoji:"🧸",
+type:"safe",
+message:
+"Betul! Teddy bear selamat dimainkan.",
+x:15,
+y:54
+},
+
+{
+name:"Buku",
+emoji:"📚",
+type:"safe",
+message:
+"Bagus! Buku selamat digunakan untuk membaca.",
+x:55,
+y:15
+},
+
+{
+name:"Bola",
+emoji:"⚽",
+type:"safe",
+message:
+"Betul! Bola lembut selamat dimainkan di tempat yang sesuai.",
+x:33,
+y:56
+}
+
+]
+
+},
+
+
+/* =====================================================
+   BILIK AIR
+===================================================== */
+
+{
+
+title:"🚿 BABAK 3: BILIK AIR",
+
+subtitle:
+"Cari perkara yang boleh menyebabkan kemalangan di dalam bilik air.",
+
+className:"bathroom",
+
+background:`
+
+<div class="walltiles"></div>
+
+<div class="floor"></div>
+
+<div class="mirror"></div>
+
+<div class="vanity"></div>
+
+<div class="sink"></div>
+
+<div class="tap"></div>
+
+<div class="toilet">🚽</div>
+
+<div class="showerbox"></div>
+
+<div class="shower">🚿</div>
+
+<div class="water">💧💧</div>
+
+<div class="rack"></div>
+
+<div class="bottles">
+🧴<br>
+🧼<br>
+🧴
+</div>
+
+<div class="towelbar"></div>
+
+<div class="towel"></div>
+
+<div class="mat"></div>
+
+<div class="object-zone"></div>
+
+`,
+
+completeTitle:
+"🚿 BILIK AIR SELAMAT!",
+
+completeText:
+"Tahniah! Anda berjaya menyelesaikan semua pemeriksaan keselamatan.",
+
+objects:[
+
+{
+name:"Lantai Licin",
+emoji:"💦",
+type:"danger",
+message:
+"Bahaya! Lantai basah boleh menyebabkan kita tergelincir.",
+x:64,
+y:57
+},
+
+{
+name:"Cermin Pecah",
+emoji:"🪞",
+type:"danger",
+message:
+"Bahaya! Jangan sentuh kaca pecah. Panggil orang dewasa.",
+x:17,
+y:15
+},
+
+{
+name:"Pencuci Tandas",
+emoji:"🧴",
+type:"danger",
+message:
+"Bahaya! Jangan bermain dengan bahan pencuci tandas.",
+x:70,
+y:25
+},
+
+{
+name:"Peluntur",
+emoji:"🧪",
+type:"danger",
+message:
+"Bahaya! Jangan minum atau bermain dengan bahan peluntur.",
+x:82,
+y:42
+},
+
+{
+name:"Tisu",
+emoji:"🧻",
+type:"safe",
+message:
+"Betul! Tisu tandas selamat digunakan.",
+x:36,
+y:47
+},
+
+{
+name:"Berus Gigi",
+emoji:"🪥",
+type:"safe",
+message:
+"Bagus! Berus gigi digunakan untuk membersihkan gigi.",
+x:24,
+y:38
+},
+
+{
+name:"Sabun",
+emoji:"🧼",
+type:"safe",
+message:
+"Betul! Sabun mandi selamat digunakan dengan cara yang betul.",
+x:50,
+y:21
+},
+
+{
+name:"Tuala",
+emoji:"🧺",
+type:"safe",
+message:
+"Bagus! Tuala digunakan untuk mengeringkan badan.",
+x:42,
+y:12
+}
+
+]
+
+}
+
+];
+
+
+/* =====================================================
+   VARIABLES
+===================================================== */
+
+let currentLevel=0;
+let score=0;
+let lives=3;
+let completed=0;
+
+let dragged=null;
+let originalParent=null;
+
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
+
+const startScreen=
+document.getElementById("startScreen");
+
+const gameScreen=
+document.getElementById("gameScreen");
+
+const finalScreen=
+document.getElementById("finalScreen");
+
+const roomScene=
+document.getElementById("roomScene");
+
+const safeZone=
+document.getElementById("safeZone");
+
+const dangerZone=
+document.getElementById("dangerZone");
+
+const feedback=
+document.getElementById("feedback");
+
+const nextBtn=
+document.getElementById("nextBtn");
+
+
+/* =====================================================
+   START
+===================================================== */
+
+document
+.getElementById("startBtn")
+.addEventListener("click",()=>{
+
+currentLevel=0;
+score=0;
+lives=3;
+
+startScreen.classList.add("hidden");
+
+gameScreen.classList.remove("hidden");
+
+loadLevel();
+
+});
+
+
+/* =====================================================
+   LOAD LEVEL
+===================================================== */
+
+function loadLevel(){
+
+completed=0;
+lives=3;
+
+const level=
+levels[currentLevel];
+
+document
+.getElementById("levelTitle")
+.textContent=
+level.title;
+
+document
+.getElementById("levelSubtitle")
+.textContent=
+level.subtitle;
+
+roomScene.className=
+"room "+level.className;
+
+roomScene.innerHTML=
+level.background;
+
+const zone=
+roomScene.querySelector(
+".object-zone"
+);
+
+level.objects.forEach(
+(obj,index)=>{
+
+createObject(
+obj,
+index,
+zone
+);
+
+});
+
+feedback.className="";
+
+feedback.innerHTML=
+"👀 Cari objek yang bertaburan di dalam bilik dan seret ke kotak yang betul.";
+
+nextBtn.disabled=true;
+
+nextBtn.classList.add(
+"locked"
+);
+
+nextBtn.innerHTML=
+"🔒 Ke Babak Seterusnya";
+
+updateUI();
+
+updateProgress();
+
+}
+
+
+/* =====================================================
+   CREATE OBJECT
+===================================================== */
+
+function createObject(
+obj,
+index,
+zone
+){
+
+const card=
+document.createElement(
+"div"
+);
+
+card.className=
+"object";
+
+card.dataset.index=
+index;
+
+card.style.left=
+obj.x+"%";
+
+card.style.top=
+obj.y+"%";
+
+card.innerHTML=`
+
+<div class="emoji">
+${obj.emoji}
+</div>
+
+<div class="label">
+${obj.name}
+</div>
+
+`;
+
+card.addEventListener(
+"pointerdown",
+startDrag
+);
+
+zone.appendChild(card);
+
+}
+
+
+/* =====================================================
+   DRAG
+===================================================== */
+
+function startDrag(e){
+
+const card=
+e.currentTarget;
+
+if(
+card.classList.contains(
+"completed"
+)
+) return;
+
+dragged=card;
+
+originalParent=
+card.parentElement;
+
+const rect=
+card.getBoundingClientRect();
+
+card.style.width=
+rect.width+"px";
+
+card.style.height=
+rect.height+"px";
+
+card.classList.add(
+"dragging"
+);
+
+document.body.appendChild(
+card
+);
+
+moveCard(e);
+
+window.addEventListener(
+"pointermove",
+moveCard
+);
+
+window.addEventListener(
+"pointerup",
+endDrag,
+{once:true}
+);
+
+}
+
+
+function moveCard(e){
+
+if(!dragged)return;
+
+dragged.style.left=
+(e.clientX-
+dragged.offsetWidth/2)
++"px";
+
+dragged.style.top=
+(e.clientY-
+dragged.offsetHeight/2)
++"px";
+
+highlight(
+e.clientX,
+e.clientY
+);
+
+}
+
+
+function highlight(x,y){
+
+safeZone.classList.remove(
+"highlight"
+);
+
+dangerZone.classList.remove(
+"highlight"
+);
+
+if(
+inside(
+x,
+y,
+safeZone
+)
+){
+
+safeZone.classList.add(
+"highlight"
+);
+
+}
+
+if(
+inside(
+x,
+y,
+dangerZone
+)
+){
+
+dangerZone.classList.add(
+"highlight"
+);
+
+}
+
+}
+
+
+function inside(
+x,
+y,
+element
+){
+
+const rect=
+element.getBoundingClientRect();
+
+return(
+x>=rect.left &&
+x<=rect.right &&
+y>=rect.top &&
+y<=rect.bottom
+);
+
+}
+
+
+function endDrag(e){
+
+window.removeEventListener(
+"pointermove",
+moveCard
+);
+
+safeZone.classList.remove(
+"highlight"
+);
+
+dangerZone.classList.remove(
+"highlight"
+);
+
+let zone=null;
+
+if(
+inside(
+e.clientX,
+e.clientY,
+safeZone
+)
+){
+
+zone="safe";
+
+}
+else if(
+inside(
+e.clientX,
+e.clientY,
+dangerZone
+)
+){
+
+zone="danger";
+
+}
+
+dragged.classList.remove(
+"dragging"
+);
+
+originalParent.appendChild(
+dragged
+);
+
+dragged.removeAttribute(
+"style"
+);
+
+const obj=
+levels[currentLevel]
+.objects[
+Number(
+dragged.dataset.index
+)
+];
+
+dragged.style.left=
+obj.x+"%";
+
+dragged.style.top=
+obj.y+"%";
+
+if(zone){
+
+checkAnswer(
+dragged,
+zone
+);
+
+}
+
+dragged=null;
+
+}
+
+
+/* =====================================================
+   ANSWERS
+===================================================== */
+
+function checkAnswer(
+card,
+zone
+){
+
+const obj=
+levels[currentLevel]
+.objects[
+Number(
+card.dataset.index
+)
+];
+
+if(
+obj.type===zone
+){
+
+score+=10;
+
+completed++;
+
+card.classList.add(
+"completed"
+);
+
+feedback.className=
+"correct";
+
+feedback.innerHTML=
+"✅ "+obj.message;
+
+correctSound();
+
+if(
+completed===
+levels[currentLevel]
+.objects.length
+){
+
+nextBtn.disabled=false;
+
+nextBtn.classList.remove(
+"locked"
+);
+
+nextBtn.innerHTML=
+currentLevel===2
+?
+"🏆 Tamatkan Misi"
+:
+"➡️ Ke Babak Seterusnya";
+
+setTimeout(
+showComplete,
+500
+);
+
+}
+
+}else{
+
+lives--;
+
+feedback.className=
+"wrong";
+
+feedback.innerHTML=
+"❌ Cuba lagi! Lihat objek dengan teliti.";
+
+wrongSound();
+
+card.classList.add(
+"shake"
+);
+
+setTimeout(
+()=>card.classList.remove("shake"),
+400
+);
+
+if(
+lives<=0
+){
+
+setTimeout(()=>{
+
+document
+.getElementById(
+"gameOverOverlay"
+)
+.classList.remove(
+"hidden"
+);
+
+},400);
+
+}
+
+}
+
+updateUI();
+
+}
+
+
+/* =====================================================
+   COMPLETE LEVEL
+===================================================== */
+
+function showComplete(){
+
+const level=
+levels[currentLevel];
+
+document
+.getElementById(
+"completeTitle"
+)
+.textContent=
+level.completeTitle;
+
+document
+.getElementById(
+"completeText"
+)
+.textContent=
+level.completeText;
+
+document
+.getElementById(
+"continueBtn"
+)
+.textContent=
+currentLevel===2
+?
+"🏆 LIHAT KEPUTUSAN"
+:
+"➡️ BABAK SETERUSNYA";
+
+document
+.getElementById(
+"levelOverlay"
+)
+.classList.remove(
+"hidden"
+);
+
+makeConfetti();
+
+}
+
+
+nextBtn.addEventListener(
+"click",
+()=>{
+
+if(
+completed<
+levels[currentLevel]
+.objects.length
+)return;
+
+showComplete();
+
+});
+
+
+document
+.getElementById(
+"continueBtn"
+)
+.addEventListener(
+"click",
+()=>{
+
+document
+.getElementById(
+"levelOverlay"
+)
+.classList.add(
+"hidden"
+);
+
+if(
+currentLevel<
+levels.length-1
+){
+
+currentLevel++;
+
+loadLevel();
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+}
+else{
+
+showFinal();
+
+}
+
+});
+
+
+/* =====================================================
+   GAME OVER
+===================================================== */
+
+document
+.getElementById(
+"retryBtn"
+)
+.addEventListener(
+"click",
+()=>{
+
+document
+.getElementById(
+"gameOverOverlay"
+)
+.classList.add(
+"hidden"
+);
+
+loadLevel();
+
+});
+
+
+/* =====================================================
+   UI
+===================================================== */
+
+function updateUI(){
+
+document
+.getElementById(
+"lifeText"
+)
+.textContent=
+lives;
+
+document
+.getElementById(
+"scoreText"
+)
+.textContent=
+score;
+
+}
+
+
+function updateProgress(){
+
+for(
+let i=0;
+i<3;
+i++
+){
+
+const el=
+document.getElementById(
+"progress"+(i+1)
+);
+
+el.classList.remove(
+"active",
+"done"
+);
+
+if(
+i<currentLevel
+){
+
+el.classList.add(
+"done"
+);
+
+}
+
+if(
+i===currentLevel
+){
+
+el.classList.add(
+"active"
+);
+
+}
+
+}
+
+}
+
+
+/* =====================================================
+   FINAL
+===================================================== */
+
+function showFinal(){
+
+gameScreen.classList.add(
+"hidden"
+);
+
+finalScreen.classList.remove(
+"hidden"
+);
+
+document
+.getElementById(
+"finalScore"
+)
+.textContent=
+score;
+
+const max=
+levels.reduce(
+(sum,level)=>
+sum+
+level.objects.length*10,
+0
+);
+
+const ratio=
+score/max;
+
+if(ratio>=.8){
+
+document
+.getElementById(
+"finalStars"
+)
+.textContent=
+"⭐⭐⭐";
+
+document
+.getElementById(
+"performance"
+)
+.textContent=
+"Cemerlang!";
+
+}
+
+else if(ratio>=.5){
+
+document
+.getElementById(
+"finalStars"
+)
+.textContent=
+"⭐⭐";
+
+document
+.getElementById(
+"performance"
+)
+.textContent=
+"Bagus!";
+
+}
+
+else{
+
+document
+.getElementById(
+"finalStars"
+)
+.textContent=
+"⭐";
+
+document
+.getElementById(
+"performance"
+)
+.textContent=
+"Teruskan Berlatih!";
+
+}
+
+makeConfetti();
+
+}
+
+
+/* =====================================================
+   RESTART
+===================================================== */
+
+document
+.getElementById(
+"restartBtn"
+)
+.addEventListener(
+"click",
+()=>{
+
+finalScreen.classList.add(
+"hidden"
+);
+
+startScreen.classList.remove(
+"hidden"
+);
+
+});
+
+
+/* =====================================================
+   SOUND
+===================================================== */
+
+function correctSound(){
+
+try{
+
+const ctx=
+new(
+window.AudioContext||
+window.webkitAudioContext
+)();
+
+const osc=
+ctx.createOscillator();
+
+const gain=
+ctx.createGain();
+
+osc.connect(gain);
+
+gain.connect(
+ctx.destination
+);
+
+osc.frequency.setValueAtTime(
+600,
+ctx.currentTime
+);
+
+osc.frequency.exponentialRampToValueAtTime(
+900,
+ctx.currentTime+.18
+);
+
+gain.gain.setValueAtTime(
+.1,
+ctx.currentTime
+);
+
+gain.gain.exponentialRampToValueAtTime(
+.001,
+ctx.currentTime+.3
+);
+
+osc.start();
+
+osc.stop(
+ctx.currentTime+.3
+);
+
+}catch(e){}
+
+}
+
+
+function wrongSound(){
+
+try{
+
+const ctx=
+new(
+window.AudioContext||
+window.webkitAudioContext
+)();
+
+const osc=
+ctx.createOscillator();
+
+const gain=
+ctx.createGain();
+
+osc.connect(gain);
+
+gain.connect(
+ctx.destination
+);
+
+osc.frequency.setValueAtTime(
+240,
+ctx.currentTime
+);
+
+osc.frequency.exponentialRampToValueAtTime(
+150,
+ctx.currentTime+.2
+);
+
+gain.gain.setValueAtTime(
+.1,
+ctx.currentTime
+);
+
+gain.gain.exponentialRampToValueAtTime(
+.001,
+ctx.currentTime+.25
+);
+
+osc.start();
+
+osc.stop(
+ctx.currentTime+.25
+);
+
+}catch(e){}
+
+}
+
+
+/* =====================================================
+   CONFETTI
+===================================================== */
+
+function makeConfetti(){
+
+const colors=[
+"#ff5252",
+"#ffd740",
+"#4caf50",
+"#42a5f5",
+"#ab47bc",
+"#ff8a3d"
+];
+
+for(
+let i=0;
+i<70;
+i++
+){
+
+const c=
+document.createElement(
+"div"
+);
+
+c.className=
+"confetti";
+
+c.style.left=
+Math.random()*100+
+"vw";
+
+c.style.background=
+colors[
+Math.floor(
+Math.random()*
+colors.length
+)
+];
+
+c.style.animationDelay=
+Math.random()*.8+
+"s";
+
+document.body.appendChild(
+c
+);
+
+setTimeout(
+()=>c.remove(),
+3500
+);
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
